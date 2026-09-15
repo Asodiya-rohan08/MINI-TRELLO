@@ -239,6 +239,96 @@ body {
   gap: 18px;
 }
 
+.table-wrap {
+  overflow-x: auto;
+  background: rgba(18, 14, 63, 0.92);
+  border: 1px solid var(--column-todo-border);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.28);
+}
+
+.task-table {
+  width: 100%;
+  min-width: 760px;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+
+.task-table th,
+.task-table td {
+  padding: 14px 16px;
+  text-align: left;
+  vertical-align: middle;
+}
+
+.task-table th {
+  background: rgba(42, 37, 102, 0.9);
+  border-bottom: 1px solid var(--column-todo-border);
+  color: var(--text);
+  font-size: 0.74rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.task-table th:nth-child(1) { width: 26%; }
+.task-table th:nth-child(2) { width: 17%; }
+.task-table th:nth-child(3) { width: 12%; }
+.task-table th:nth-child(4) { width: 17%; }
+.task-table th:nth-child(5) { width: 12%; }
+.task-table th:nth-child(6) { width: 16%; }
+
+.task-table td {
+  border-bottom: 1px solid rgba(141, 135, 196, 0.16);
+  color: var(--muted-purple);
+  font-size: 0.84rem;
+}
+
+.task-table tbody tr:nth-child(even) {
+  background: rgba(255, 255, 255, 0.035);
+}
+
+.task-table tbody tr:hover {
+  background: rgba(124, 108, 240, 0.1);
+}
+
+.task-table tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.table-title {
+  overflow: hidden;
+  color: var(--text);
+  font-weight: 700;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.table-progress {
+  color: var(--accent-text);
+  font-weight: 700;
+}
+
+.table-actions-heading,
+.table-actions {
+  text-align: right !important;
+  white-space: nowrap;
+}
+
+.table-actions .icon-btn {
+  width: auto;
+  min-width: 28px;
+  margin-left: 4px;
+  padding: 0 7px;
+  font-size: 0.72rem;
+}
+
+.empty-table {
+  padding: 28px 16px;
+  color: var(--muted-purple);
+  text-align: center;
+}
+
 .column {
   min-height: 420px;
   background: linear-gradient(180deg, rgba(18, 14, 63, 0.96), rgba(18, 14, 63, 0.78));
@@ -371,6 +461,21 @@ body {
   letter-spacing: 0.05em;
   text-transform: uppercase;
   color: var(--accent-text);
+}
+
+.status-pill.todo {
+  background: rgba(141, 135, 196, 0.2);
+  color: #b7b2e6;
+}
+
+.status-pill.in_progress {
+  background: rgba(79, 195, 232, 0.16);
+  color: var(--blue-icon);
+}
+
+.status-pill.done {
+  background: rgba(124, 108, 240, 0.2);
+  color: #b8adff;
 }
 
 .task-card p {

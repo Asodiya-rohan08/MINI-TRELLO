@@ -82,6 +82,11 @@ document.addEventListener('DOMContentLoaded', () => {
     return 0;
   }
 
+  function formatDate(value) {
+    if (!value) return '—';
+    return new Date(value).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+  }
+
   // ---------- Fetch ----------
   async function fetchTasks() {
     try {
@@ -240,10 +245,15 @@ document.addEventListener('DOMContentLoaded', () => {
     emptyTable.hidden = list.length !== 0;
     list.forEach((task) => {
       const tr = document.createElement('tr');
+      const assignedTo = task.created_by && task.created_by.trim() ? task.created_by.trim() : 'Unassigned';
+      const dueDate = task.due_date || task.dueDate || task.due;
       tr.innerHTML = `
         <td><div class="table-title">${escapeHtml(task.title)}</div></td>
         <td><span class="status-pill ${task.status}">${STATUS_LABEL[task.status] || task.status}</span></td>
-        <td style="text-align:right; white-space:nowrap">
+        <td><span class="table-progress">${getTaskProgressValue(task.status)}%</span></td>
+        <td>${escapeHtml(assignedTo)}</td>
+        <td>${escapeHtml(formatDate(dueDate))}</td>
+        <td class="table-actions">
           <button class="icon-btn" data-a="prev">←</button>
           <button class="icon-btn" data-a="next">→</button>
           <button class="icon-btn" data-a="edit">Edit</button>
@@ -362,16 +372,25 @@ document.addEventListener('DOMContentLoaded', () => {
 
   toggleBtns.forEach((btn) => {
     btn.addEventListener('click', () => {
-      toggleBtns.forEach((b) => b.classList.remove('active'));
-      btn.classList.add('active');
-      currentView = btn.dataset.view;
-      const isBoard = currentView === 'board';
-      boardView.hidden = !isBoard;
-      tableView.hidden = isBoard;
-      if (!isBoard) renderTable();
-      else renderBoard();
+      setView(btn.dataset.view);
     });
   });
+
+  function setView(view) {
+    currentView = view === 'table' ? 'table' : 'board';
+    const isBoard = currentView === 'board';
+    toggleBtns.forEach((btn) => {
+      const isActive = btn.dataset.view === currentView;
+      btn.classList.toggle('active', isActive);
+      btn.setAttribute('aria-selected', String(isActive));
+    });
+    boardView.hidden = !isBoard;
+    tableView.hidden = isBoard;
+    boardView.setAttribute('aria-hidden', String(!isBoard));
+    tableView.setAttribute('aria-hidden', String(isBoard));
+    if (isBoard) renderBoard();
+    else renderTable();
+  }
 
   searchInput.addEventListener('input', () => {
     searchQuery = searchInput.value.trim();
